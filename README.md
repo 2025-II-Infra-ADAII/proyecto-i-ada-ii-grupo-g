@@ -2,8 +2,8 @@
 
 # Asignación: [Nombre de la asignación]
 
-**Fecha:** [DD/MM/AAAA]
-**Curso:** [Nombre del Curso]
+**Fecha:** [13/10/2025]
+**Curso:** [Analisis y Diseños de Algoritmos II]
 
 ---
 
@@ -11,9 +11,9 @@
 
 | Nombre Completo       | Código  | Rol            | Correo Electrónico       |
 |-----------------------|---------|----------------|--------------------------|
-| [Estudiante 1]        | 123456  | [Líder/Colab.] | [correo1@institucion.edu]|
-| [Estudiante 2]        | 123457  | [Colaborador]  | [correo2@institucion.edu]|
-| [Estudiante 3]        | 123458  | [Colaborador]  | [correo3@institucion.edu]|
+| [Diego Alejandro Parra Rios]        | 2159873  | [Líder/Colab.] | [diego.alejandro.parra@correounivalle.edu.co]|
+| [Manuel Jesus Rosero Zuñiga]        | 2176007  | [Colaborador]  | [rosero.manuel@correounivalle.edu.co]|
+| [Brian Esteban Gonzalez Benavides]        | 2159812  | [Colaborador]  | [brian.gonzalez@correounivalle.edu.co]|
 
 ---
 
