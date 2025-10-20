@@ -19,9 +19,9 @@ Cada tablón \( T_i \) se caracteriza por:
 Solo se dispone de **un único sistema de riego**, por lo que el orden de riego afecta el “sufrimiento” de los cultivos.  
 Se busca la **permutación óptima** \( \Pi \) que minimiza el costo total:
 
-\[
+$$
 CRF_{\Pi} = \sum_{i=0}^{n-1} p_{\Pi_i} \cdot \max(0, (t_{\Pi_i} + tr_{\Pi_i}) - ts_{\Pi_i})
-\]
+$$
 
 donde \( t_{\Pi_i} \) es el tiempo en que comienza el riego del tablón \( \Pi_i \).
 
@@ -49,15 +49,16 @@ dp(mask, tiempo) = \text{costo mínimo para completar el riego desde este estado
 
 Para cada tablón \( j \) que aún no ha sido regado:
 
-\[
-dp(mask, tiempo) = \min_{j \notin mask} \big( p_j \cdot \max(0, (tiempo + tr_j) - ts_j) + dp(mask \cup \{j\}, tiempo + tr_j) \big)
-\]
+$$
+dp(mask, tiempo) = \min_{j \notin mask} \Big( p_j \cdot \max(0, (tiempo + tr_j) - ts_j) + dp(mask \cup \{j\}, tiempo + tr_j) \Big)
+$$
 
 ### 2.3. Condición base
 
-\[
+$$
 dp(\text{todos regados}) = 0
-\]
+$$
+
 
 ### 2.4. Resultado
 
@@ -72,7 +73,7 @@ El archivo principal es `dinamica.py`, que contiene:
 ```python
 def roD(input_file=None, output_file=None):
     # Lectura de datos desde archivo
-    # Aplicación de DP por subconjuntos con memoización (lru_cache)
+    # Aplicación de PD por subconjuntos con memoización (lru_cache)
     # Cálculo del costo mínimo y reconstrucción del orden óptimo
     # Escritura del resultado en archivo de salida
     return mejor_orden, costo_total
@@ -108,12 +109,12 @@ def dp(mask, tiempo_actual):
 
 ## 4. Complejidad
 
-| Concepto                    | Orden de complejidad | Explicación                  |
-| --------------------------- | -------------------- | ---------------------------- |
-| **Estados posibles**        | ( 2^n )              | cada combinación de tablones |
-| **Transiciones por estado** | ( n )                | cada tablón no regado aún    |
-| **Tiempo total**            | ( O(n \cdot 2^n) )   |                              |
-| **Espacio total**           | ( O(2^n) )           | tabla de memoización         |
+| Concepto                    | Orden de complejidad              | Explicación                  |
+| --------------------------- | --------------------------------- | ---------------------------- |
+| **Estados posibles**        | $2^n$                             | Cada combinación de tablones |
+| **Transiciones por estado** | $n$                               | Cada tablón no regado aún    |
+| **Tiempo total**            | $\mathcal{O}(n \cdot 2^n)$        | Complejidad temporal total   |
+| **Espacio total**           | $\mathcal{O}(2^n)$                | Tabla de memoización         |
 
 ---
 
@@ -129,9 +130,10 @@ En este enfoque, cada estado representa un conjunto de tablones ya regados y el 
 Esta complejidad es **exponencial**, pero mejora notablemente respecto a la **fuerza bruta**, que requeriría explorar las \( n! \) permutaciones posibles.  
 Por ejemplo, para \( n = 10 \):
 
-\[
-n! = 3,628,800 \quad \text{vs.} \quad n \cdot 2^n = 10,240
-\]
+$$
+n! = 3{,}628{,}800 \quad \text{vs.} \quad n \cdot 2^n = 10{,}240
+$$
+
 
 Esto representa una reducción de varios órdenes de magnitud en el número de operaciones necesarias para alcanzar la solución óptima.
 
@@ -141,14 +143,15 @@ Esto representa una reducción de varios órdenes de magnitud en el número de o
 
 La implementación utiliza almacenamiento en memoria para **memorizar los subproblemas ya resueltos**, lo que permite evitar recomputaciones.
 
-- **Memoria principal:** \( O(2^n) \), correspondiente a los valores de `dp(mask, tiempo)`.
-- **Espacio auxiliar:** \( O(n) \), para las estructuras de control y reconstrucción del orden óptimo.
+- **Memoria principal:** `$O(2^n)$`, correspondiente a los valores de `dp(mask, tiempo)`.
+- **Espacio auxiliar:** `$O(n)$`, para las estructuras de control y reconstrucción del orden óptimo.
 
 En total, la complejidad espacial es:
 
-\[
-O(2^n)
-\]
+
+$$
+O(n \cdot 2^n)
+$$
 
 Esta es manejable para tamaños pequeños (p.ej., \( n \leq 15 \)), pero crece rápidamente y limita la viabilidad práctica de la solución para valores mayores.  
 Por eso el algoritmo se diseñó principalmente como una **demostración conceptual** y comparativa frente a los enfoques de fuerza bruta y voraz.
@@ -190,13 +193,12 @@ por el almacenamiento de los estados dp(mask,tiempo).
 Supongamos una maquina que procesa 3×10^8
  operaciones por minuto
 y que cada celda ocupa 4 bytes.
-| Parámetro                        | Fórmula                           | Para n=10 | Para n=15 | Para n=20  |
-| -------------------------------- | --------------------------------- | --------- | --------- | ---------- |
-| Estados (2^n)                    | (2^n)                             | 1,024     | 32,768    | 1,048,576  |
-| Operaciones aprox. (n \cdot 2^n) | (n \cdot 2^n)                     | 10,240    | 491,520   | 20,971,520 |
-| Tiempo estimado (s)              | (\frac{n \cdot 2^n}{5\times10^6}) | 0.002     | 0.1       | 4.2        |
-| Memoria (bytes)                  | (4 \times 2^n)                    | 4 KB      | 128 KB    | 4 MB       |
-
+| Parámetro                        | Fórmula                                      | Para n=10 | Para n=15 | Para n=20  |
+| -------------------------------- | -------------------------------------------- | --------- | --------- | ---------- |
+| Estados (2^n)                    | $2^n$                                        | 1,024     | 32,768    | 1,048,576  |
+| Operaciones aprox. (n·2^n)       | $n \cdot 2^n$                               | 10,240    | 491,520   | 20,971,520 |
+| Tiempo estimado (s)              | $\displaystyle\frac{n \cdot 2^n}{5\times10^6}$ | 0.002     | 0.1       | 4.2        |
+| Memoria (bytes)                  | $4 \times 2^n$                              | 4 KB      | 128 KB    | 4 MB       |
 
 - Para n≤15: totalmente viable.
 
@@ -204,8 +206,8 @@ y que cada celda ocupa 4 bytes.
 
 - Para n>25: la memoria y el tiempo se vuelven imprácticos.
 
-Esto justifica por qué en el entorno CI/CD solo se ejecutó el caso entrada_juguete.txt (n pequeño).
-Los tamaños medianos y grandes se documentaron teóricamente, ya que su tiempo de cómputo crecería de forma exponencial y sobrecargaría los pipelines.
+Esto es para justificar el porque en el entorno CI/CD solo se ejecutó el caso entrada_juguete.txt (n pequeño).
+Los tamaños medianos y grandes se documentaron, ya que su tiempo de cómputo crecería de forma exponencial y sobrecargaría los pipelines.
 
 ---
 
@@ -275,7 +277,7 @@ graph LR
 ## 7.1. Grafico Experimental
 
 Lo siguiente muestra la relación entre el número de tablones (`n`) y el tiempo promedio de ejecución del algoritmo de programación dinámica.  
-Los valores se basan en mediciones simuladas y reflejan el crecimiento exponencial esperado de la complejidad \(O(n \cdot 2^n)\).
+Los valores se basan en mediciones simuladas y reflejan el crecimiento exponencial esperado de la complejidad `$O(n⋅2^n)$`
 
 | n | Tiempo promedio (s) |
 |---|----------------------|

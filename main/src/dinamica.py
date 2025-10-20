@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import filedialog
 from functools import lru_cache
 
-def roD(input_file=None, output_file=None):
+def roPD(input_file=None, output_file=None):
     """
     Programacion Dinamica para el problema del riego optimo.
     Recibe un archivo con formato:
@@ -89,7 +89,7 @@ def roD(input_file=None, output_file=None):
 
 # Si se ejecuta directamente el archivo:
 if __name__ == "__main__":
-    orden, costo = roD()
+    orden, costo = roPD()
     if orden is not None:
         print(f"\nOrden óptimo: {orden}")
         print(f"Costo total: {costo}")
