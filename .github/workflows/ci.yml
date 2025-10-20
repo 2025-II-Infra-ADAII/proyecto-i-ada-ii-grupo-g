@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10, 3.11]
 
     steps:
       - name: Checkout código
@@ -17,12 +20,12 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: ${{ matrix.python-version }}
 
-      - name: Instalar dependencias (si existe)
+      - name: Instalar dependencias
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; else echo "No requirements.txt, saltando"; fi
+          pip install pytest
 
       - name: Ejecutar tests - Fuerza Bruta (roB)
         run: |
@@ -41,9 +44,8 @@ jobs:
 
       - name: Generar artefacto de entrega
         run: |
-          ART=build-artifact-3.11.zip
-          # Empaquetar código/ docs / archivos relevantes
-          zip -r "$ART" main docs README.md requirements.txt main/tests || tar -czf "$ART" main docs README.md requirements.txt main/tests
+          ART=build-artifact-${{ matrix.python-version }}.zip
+          zip -r "$ART" main docs README.md requirements.txt || tar -czf "$ART" main docs README.md requirements.txt
 
       - name: Subir artefacto
         uses: actions/upload-artifact@v4
