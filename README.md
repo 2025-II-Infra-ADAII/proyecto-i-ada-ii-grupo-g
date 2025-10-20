@@ -18,4 +18,6 @@
 ---
 
 ## 📌 Descripción del Taller
-Este taller aborda el "Problema del Riego Óptimo" y tiene como objetivo que los participantes modelen el problema, implementen y comparen distintas técnicas algorítmicas (fuerza bruta, voraz y programación dinámica). Se trabajará con implementaciones en Python, se generarán y ejecutarán pruebas locales y se documentarán los resultados en un informe técnico. Al finalizar, los asistentes habrán aprendido a formular el problema, medir la calidad de soluciones heurísticas frente a soluciones exactas y preparar evidencias reproducibles de sus experimentos.
+Este taller aborda el "Problema del Riego Óptimo" y tiene como objetivo que los participantes modelen el problema, implementen y comparen distintas técnicas algorítmicas (fuerza bruta, voraz y programación dinámica). Se trabajo con implementaciones en Python, se generarán y ejecutarán pruebas locales y se documentarán los resultados en un informe técnico. Al finalizar, los asistentes habrán aprendido a formular el problema, medir la calidad de soluciones heurísticas frente a soluciones exactas y preparar evidencias reproducibles de sus experimentos.
+
+Falta mas y detalles xd
