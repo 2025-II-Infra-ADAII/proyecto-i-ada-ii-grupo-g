@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import filedialog 
 import itertools
 
-def roB(input_file=None, output_file=None):
+def roFB(input_file=None, output_file=None):
     if input_file is None:
         root = tk.Tk()
         root.withdraw()  
