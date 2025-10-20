@@ -27,18 +27,29 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; else echo "No requirements.txt, saltando"; fi
 
+      - name: Ejecutar tests - Fuerza Bruta (roB)
+        run: |
+          echo "Ejecutando tests de Fuerza Bruta"
+          pytest -v main/tests/bruta_test.py --maxfail=1 --disable-warnings
+
+      - name: Ejecutar tests - Dinámica (roD)
+        run: |
+          echo "Ejecutando tests de Programación Dinámica"
+          pytest -v main/tests/dinamica_test.py --maxfail=1 --disable-warnings
+
+      - name: Ejecutar tests - Voraz (roV)
+        run: |
+          echo "Ejecutando tests de Estrategia Voraz"
+          pytest -v main/tests/voraz_test.py --maxfail=1 --disable-warnings
+
       - name: Generar artefacto de entrega
         run: |
           ART=build-artifact-${{ matrix.python-version }}.zip
           # Empaquetar código/ docs / archivos relevantes
-          zip -r "$ART" main docs README.md requirements.txt || tar -czf "$ART" main docs README.md requirements.txt
+          zip -r "$ART" main docs README.md requirements.txt main/tests || tar -czf "$ART" main docs README.md requirements.txt main/tests
 
       - name: Subir artefacto
         uses: actions/upload-artifact@v4
         with:
           name: build-artifact-${{ matrix.python-version }}
           path: build-artifact-${{ matrix.python-version }}.zip
-
-      - name: Nota - pruebas locales
-        run: |
-          echo "Las pruebas no se ejecutan en CI por limitaciones de licencia. Ejecuta pytest localmente y documenta los resultados en el informe."
