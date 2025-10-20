@@ -5,7 +5,7 @@ import statistics
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
-from main.src.bruta import roB
+from main.src.bruta import roFB
 
 DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
@@ -30,7 +30,7 @@ def test_roB_funciona_con_FILES(tmp_path):
 
         for r in range(REPETICIONES):
             inicio = time.perf_counter()
-            orden, costo = roB(input_path, output_path)
+            orden, costo = roFB(input_path, output_path)
             fin = time.perf_counter()
             tiempos.append(fin - inicio)
 
