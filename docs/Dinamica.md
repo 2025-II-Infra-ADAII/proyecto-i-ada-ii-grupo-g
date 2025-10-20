@@ -73,7 +73,7 @@ El archivo principal es `dinamica.py`, que contiene:
 ```python
 def roD(input_file=None, output_file=None):
     # Lectura de datos desde archivo
-    # Aplicación de DP por subconjuntos con memoización (lru_cache)
+    # Aplicación de PD por subconjuntos con memoización (lru_cache)
     # Cálculo del costo mínimo y reconstrucción del orden óptimo
     # Escritura del resultado en archivo de salida
     return mejor_orden, costo_total
