@@ -62,4 +62,4 @@ def roB(input_file=None, output_file=None):
     print(f"\n Archivo guardado en: {output_file}")
     print(f"Orden de riego: {mejor_orden}")
 
-    return mejor_orden, mejor_costo
+    return mejor_orden, float(mejor_costo)
