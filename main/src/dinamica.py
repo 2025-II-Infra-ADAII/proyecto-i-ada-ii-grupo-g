@@ -4,15 +4,15 @@ from functools import lru_cache
 
 def roD(input_file=None, output_file=None):
     """
-    Programación Dinámica para el problema del riego óptimo.
+    Programacion Dinamica para el problema del riego optimo.
     Recibe un archivo con formato:
     n
     ts0,tr0,p0
     ts1,tr1,p1
     ...
-    Devuelve (orden óptimo, costo mínimo).
+    Devuelve (orden optimo, costo minimo).
     """
-    # === Selección de archivo si no se pasa argumento ===
+    # Selección de archivo si no se pasa argumento
     if input_file is None:
         root = tk.Tk()
         root.withdraw()
@@ -22,10 +22,10 @@ def roD(input_file=None, output_file=None):
             filetypes=[("Archivos de texto", "*.txt")]
         )
         if not input_file:
-            print("No se seleccionó archivo. Saliendo...")
+            print("No se selecciono archivo. Saliendo...")
             return None, None
 
-    # === Lectura de datos ===
+    # Lectura de datos
     with open(input_file, "r") as f:
         lineas = f.read().strip().split("\n")
         n = int(lineas[0])
@@ -35,11 +35,11 @@ def roD(input_file=None, output_file=None):
     tr = [t[1] for t in finca]
     p  = [t[2] for t in finca]
 
-    # === Memoización con máscara de bits ===
+    # Memoización con máscara de bits
     @lru_cache(maxsize=None)
     def dp(mask, tiempo_actual):
         """
-        Retorna (costo mínimo, orden óptimo) para el conjunto 'mask' de tablones ya regados.
+        Retorna (costo minimo, orden optimo) para el conjunto 'mask' de tablones ya regados.
         """
         if mask == (1 << n) - 1:
             return 0, []  # todos regados
@@ -48,7 +48,7 @@ def roD(input_file=None, output_file=None):
         mejor_orden = []
 
         for i in range(n):
-            if not (mask & (1 << i)):  # si el tablón i aún no se ha regado
+            if not (mask & (1 << i)):  # si el tablón i aun no se ha regado
                 nuevo_tiempo = tiempo_actual + tr[i]
                 penalizacion = max(0, nuevo_tiempo - ts[i])
                 costo = p[i] * penalizacion
@@ -62,10 +62,10 @@ def roD(input_file=None, output_file=None):
 
         return mejor_costo, mejor_orden
 
-    # === Ejecutar DP desde estado inicial ===
+    # Ejecutar DP desde estado inicial
     costo_total, mejor_orden = dp(0, 0)
 
-    # === Selección del archivo de salida si no se pasa ===
+    # Selección del archivo de salida si no se pasa
     if output_file is None:
         print("Seleccione dónde guardar el archivo de salida:")
         output_file = filedialog.asksaveasfilename(
@@ -79,7 +79,7 @@ def roD(input_file=None, output_file=None):
             print("Orden:", mejor_orden)
             return mejor_orden, costo_total
 
-    # === Guardar salida ===
+    # Guardar salida
     with open(output_file, "w") as f:
         f.write(f"{costo_total}\n")
         for idx in mejor_orden:
