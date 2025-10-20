@@ -19,9 +19,9 @@ Cada tablón \( T_i \) se caracteriza por:
 Solo se dispone de **un único sistema de riego**, por lo que el orden de riego afecta el “sufrimiento” de los cultivos.  
 Se busca la **permutación óptima** \( \Pi \) que minimiza el costo total:
 
-\[
+$$
 CRF_{\Pi} = \sum_{i=0}^{n-1} p_{\Pi_i} \cdot \max(0, (t_{\Pi_i} + tr_{\Pi_i}) - ts_{\Pi_i})
-\]
+$$
 
 donde \( t_{\Pi_i} \) es el tiempo en que comienza el riego del tablón \( \Pi_i \).
 
@@ -49,15 +49,16 @@ dp(mask, tiempo) = \text{costo mínimo para completar el riego desde este estado
 
 Para cada tablón \( j \) que aún no ha sido regado:
 
-\[
-dp(mask, tiempo) = \min_{j \notin mask} \big( p_j \cdot \max(0, (tiempo + tr_j) - ts_j) + dp(mask \cup \{j\}, tiempo + tr_j) \big)
-\]
+$$
+dp(mask, tiempo) = \min_{j \notin mask} \Big( p_j \cdot \max(0, (tiempo + tr_j) - ts_j) + dp(mask \cup \{j\}, tiempo + tr_j) \Big)
+$$
 
 ### 2.3. Condición base
 
-\[
+$$
 dp(\text{todos regados}) = 0
-\]
+$$
+
 
 ### 2.4. Resultado
 
@@ -72,7 +73,7 @@ El archivo principal es `dinamica.py`, que contiene:
 ```python
 def roD(input_file=None, output_file=None):
     # Lectura de datos desde archivo
-    # Aplicación de DP por subconjuntos con memoización (lru_cache)
+    # Aplicación de PD por subconjuntos con memoización (lru_cache)
     # Cálculo del costo mínimo y reconstrucción del orden óptimo
     # Escritura del resultado en archivo de salida
     return mejor_orden, costo_total
@@ -108,36 +109,109 @@ def dp(mask, tiempo_actual):
 
 ## 4. Complejidad
 
-| Concepto                    | Orden de complejidad | Explicación                  |
-| --------------------------- | -------------------- | ---------------------------- |
-| **Estados posibles**        | ( 2^n )              | cada combinación de tablones |
-| **Transiciones por estado** | ( n )                | cada tablón no regado aún    |
-| **Tiempo total**            | ( O(n \cdot 2^n) )   |                              |
-| **Espacio total**           | ( O(2^n) )           | tabla de memoización         |
+| Concepto                    | Orden de complejidad              | Explicación                  |
+| --------------------------- | --------------------------------- | ---------------------------- |
+| **Estados posibles**        | $2^n$                             | Cada combinación de tablones |
+| **Transiciones por estado** | $n$                               | Cada tablón no regado aún    |
+| **Tiempo total**            | $\mathcal{O}(n \cdot 2^n)$        | Complejidad temporal total   |
+| **Espacio total**           | $\mathcal{O}(2^n)$                | Tabla de memoización         |
 
 ---
 
-## 5. Ejemplo
-Entrada de ejemplo:
-```csharp
-5
-[10,3,4]
-[5,3,3]
-[2,2,1]
-[8,1,1]
-[6,4,2]
-```
+## 4.1. Complejidad Algorítmica
 
-El algoritmo encuentra un orden óptimo (por ejemplo):
-```csharp
-[2, 1, 4, 3, 0]
-```
-con un costo total mínimo (dependiente de los parámetros).
+El algoritmo de programación dinámica implementado sigue el paradigma de **optimización por subconjuntos**.  
+En este enfoque, cada estado representa un conjunto de tablones ya regados y el tiempo total acumulado hasta ese punto.
 
+- **Número de estados:** \( 2^n \)
+- **Número de transiciones por estado:** hasta \( n \)
+- **Complejidad temporal total:** \( O(n \cdot 2^n) \)
+
+Esta complejidad es **exponencial**, pero mejora notablemente respecto a la **fuerza bruta**, que requeriría explorar las \( n! \) permutaciones posibles.  
+Por ejemplo, para \( n = 10 \):
+
+$$
+n! = 3{,}628{,}800 \quad \text{vs.} \quad n \cdot 2^n = 10{,}240
+$$
+
+
+Esto representa una reducción de varios órdenes de magnitud en el número de operaciones necesarias para alcanzar la solución óptima.
 
 ---
 
-## 6. Diagrama
+## 4.2. Complejidad Espacial
+
+La implementación utiliza almacenamiento en memoria para **memorizar los subproblemas ya resueltos**, lo que permite evitar recomputaciones.
+
+- **Memoria principal:** `$O(2^n)$`, correspondiente a los valores de `dp(mask, tiempo)`.
+- **Espacio auxiliar:** `$O(n)$`, para las estructuras de control y reconstrucción del orden óptimo.
+
+En total, la complejidad espacial es:
+
+
+$$
+O(n \cdot 2^n)
+$$
+
+Esta es manejable para tamaños pequeños (p.ej., \( n \leq 15 \)), pero crece rápidamente y limita la viabilidad práctica de la solución para valores mayores.  
+Por eso el algoritmo se diseñó principalmente como una **demostración conceptual** y comparativa frente a los enfoques de fuerza bruta y voraz.
+
+---
+
+---
+
+## 4.3. Justificación del Enfoque Dinámico
+
+La **programación dinámica** fue seleccionada por tres razones fundamentales:
+
+1. **Subestructura óptima:**  
+   El costo mínimo total depende únicamente de los costos mínimos de los subproblemas (los subconjuntos de tablones ya regados).  
+   Es decir, si se conoce el mejor costo para cierto conjunto de tablones, este valor puede reutilizarse para construir soluciones mayores.
+
+2. **Solapamiento de subproblemas:**  
+   Muchos subconjuntos se recalcularían repetidamente en un enfoque de fuerza bruta.  
+   Con DP, esos resultados se **almacenan y reutilizan** mediante memoización, reduciendo drásticamente el tiempo total.
+
+3. **Equilibrio entre exactitud y eficiencia:**  
+   Aunque sigue siendo exponencial, el enfoque DP logra una **reducción significativa respecto a la fuerza bruta** sin perder la garantía de obtener el costo óptimo.  
+   En contraste, la heurística voraz ofrece una respuesta mucho más rápida, pero no necesariamente óptima.
+
+---
+
+## 4.3.5. Complejidad y evaluacion práctica
+
+Complejidad temporal:
+`$O(n*2^n)$`
+
+Complejidad espacial:
+`$O(2^n)$`
+
+por el almacenamiento de los estados dp(mask,tiempo).
+
+**Evaluacion practica**
+
+Supongamos una maquina que procesa 3×10^8
+ operaciones por minuto
+y que cada celda ocupa 4 bytes.
+| Parámetro                        | Fórmula                                      | Para n=10 | Para n=15 | Para n=20  |
+| -------------------------------- | -------------------------------------------- | --------- | --------- | ---------- |
+| Estados (2^n)                    | $2^n$                                        | 1,024     | 32,768    | 1,048,576  |
+| Operaciones aprox. (n·2^n)       | $n \cdot 2^n$                               | 10,240    | 491,520   | 20,971,520 |
+| Tiempo estimado (s)              | $\displaystyle\frac{n \cdot 2^n}{5\times10^6}$ | 0.002     | 0.1       | 4.2        |
+| Memoria (bytes)                  | $4 \times 2^n$                              | 4 KB      | 128 KB    | 4 MB       |
+
+- Para n≤15: totalmente viable.
+
+- Para n≈20: límite razonable.
+
+- Para n>25: la memoria y el tiempo se vuelven imprácticos.
+
+Esto es para justificar el porque en el entorno CI/CD solo se ejecutó el caso entrada_juguete.txt (n pequeño).
+Los tamaños medianos y grandes se documentaron, ya que su tiempo de cómputo crecería de forma exponencial y sobrecargaría los pipelines.
+
+---
+
+## 5. Diagrama
 
 ```mermaid
 flowchart TD
@@ -154,7 +228,7 @@ flowchart TD
 ```
 ---
 
-## 7. Pruebas y Verificacion
+## 6. Pruebas y Verificacion
 
 El archivo dinamica_test.py valida:
 
@@ -178,7 +252,7 @@ pytest -q tests/dinamica_test.py::test_roD_funciona_con_FILES
 
 ---
 
-## 8. Visualizacion de Resultados
+## 7. Visualizacion de Resultados
 
 | Tamaño n | Tiempo promedio (s) |
 | -------- | ------------------- |
@@ -200,10 +274,10 @@ graph LR
 ```
 ---
 
-## 8.1. Grafico Experimental
+## 7.1. Grafico Experimental
 
-La siguiente figura muestra la relación entre el número de tablones (`n`) y el tiempo promedio de ejecución del algoritmo de programación dinámica.  
-Los valores se basan en mediciones simuladas y reflejan el crecimiento exponencial esperado de la complejidad \(O(n \cdot 2^n)\).
+Lo siguiente muestra la relación entre el número de tablones (`n`) y el tiempo promedio de ejecución del algoritmo de programación dinámica.  
+Los valores se basan en mediciones simuladas y reflejan el crecimiento exponencial esperado de la complejidad `$O(n⋅2^n)$`
 
 | n | Tiempo promedio (s) |
 |---|----------------------|
@@ -214,15 +288,17 @@ Los valores se basan en mediciones simuladas y reflejan el crecimiento exponenci
 
 **Figura 1.** Crecimiento del tiempo promedio de ejecución:
 
-![Gráfico de tiempos promedio de la programación dinámica](../imagenes/tiempos_dinamica.png)
+![Gráfico de tiempos promedio de la programación dinámica](tiempos_dinamica.png "Medicion tiempos y exponencial")
   
 > A medida que aumenta el número de tablones, el número de subproblemas a resolver crece exponencialmente.  
-> La gráfica confirma el comportamiento teórico de la programación dinámica por subconjuntos, eficiente solo hasta tamaños moderados (n≈18–20).
+> La gráfica confirma el comportamiento de la programacion dinamica por subconjuntos, eficiente solo hasta tamaños pequeños (n≈18–20).
 
 ---
 
-## Conclusion
+## 8. Conclusion
 
 La programación dinámica permite resolver el problema del riego óptimo con exactitud y eficiencia relativa frente a la fuerza bruta.
+Aunque la programación dinámica ofrece una solución exacta y estructurada, pero limitada por su costo exponencial.
+Su utilidad práctica radica en demostrar el principio de optimalidad y servir de referencia comparativa frente a estrategias heurísticas como el enfoque voraz.
 Su uso de máscaras de bits y memoización reduce drásticamente el tiempo de ejecución para tamaños moderados, aunque sigue siendo exponencial en el peor caso.
 El enfoque desarrollado cumple los criterios de corrección, claridad, y compatibilidad con el formato de entrada/salida definido por el proyecto.

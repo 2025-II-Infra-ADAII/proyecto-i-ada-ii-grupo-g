@@ -2,17 +2,22 @@ import os
 import sys
 import time
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from main.src.dinamica import roD
+from main.src.dinamica import roPD
 
 DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 FILES = [
     "entrada_juguete.txt",
-    "entrada_pequena.txt",
-    "entrada_mediana.txt",
-    "entrada_grande.txt",
-    "entrada_extragrande.txt",
+    #"entrada_pequena.txt",
+    #"entrada_mediana.txt",
+    #"entrada_grande.txt",
+    #"entrada_extragrande.txt",
 ]
+
+# aqui los tests usando pytest
+# los txt que estan comentados pueden ser incluidos si se desea probar con archivos mas grandes
+# pero de manera local, esto se hace porque tardan mucho en correr
+# y puede generar timeouts en el CI/CD
 
 def test_archivos():
     for i in FILES:
@@ -28,7 +33,7 @@ def test_roD_funciona_con_FILES(tmp_path):
         tiempos = []
         for _ in range(repeticiones):
             inicio = time.time()
-            orden, costo = roD(input, output)
+            orden, costo = roPD(input, output)
             fin = time.time()
             tiempos.append(fin - inicio)
 
