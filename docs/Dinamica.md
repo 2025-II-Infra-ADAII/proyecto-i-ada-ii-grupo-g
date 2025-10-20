@@ -142,14 +142,14 @@ con un costo total mínimo (dependiente de los parámetros).
 ```mermaid
 flowchart TD
     A[Inicio] --> B[Leer archivo de entrada]
-    B --> C[Inicializar dp y parámetros]
-    C --> D[Llamar dp(mask, tiempo) función recursiva]
-    D --> E[¿mask == todos regados?]
-    E -- Sí --> F[Retornar 0 y lista vacía]
+    B --> C[Inicializar DP y parametros]
+    C --> D[Llamar funcion dp con mask y tiempo]
+    D --> E[Mask igual a todos regados?]
+    E -- Si --> F[Retornar 0 y lista vacia]
     E -- No --> G[Evaluar tablones no regados]
-    G --> H[Calcular penalización y llamar dp(mask | (1<<i))]
+    G --> H[Calcular penalizacion y llamar dp con nuevo mask]
     H --> I[Actualizar mejor costo y orden]
-    I --> J[Retornar mejor_costo y mejor_orden]
+    I --> J[Retornar mejor costo y mejor orden]
     J --> K[Guardar archivo de salida y mostrar resultado]
 ```
 ---
