@@ -9,9 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.8, 3.9, 3.10, 3.11]
 
     steps:
       - name: Checkout código
@@ -20,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
       - name: Instalar dependencias (si existe)
         run: |
@@ -29,16 +26,16 @@ jobs:
 
       - name: Generar artefacto de entrega
         run: |
-          ART=build-artifact-${{ matrix.python-version }}.zip
+          ART=build-artifact-3.11.zip
           # Empaquetar código/ docs / archivos relevantes
           zip -r "$ART" main docs README.md requirements.txt || tar -czf "$ART" main docs README.md requirements.txt
 
       - name: Subir artefacto
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifact-${{ matrix.python-version }}
-          path: build-artifact-${{ matrix.python-version }}.zip
+          name: build-artifact-3.11
+          path: build-artifact-3.11.zip
 
       - name: Nota - pruebas locales
         run: |
-          echo "Las pruebas no se ejecutan en CI por limitaciones de licencia. Ejecuta pytest localmente y documenta los resultados en el informe."
+          echo "Las pruebas no se ejecutan en CI por limitaciones. Ejecuta pytest localmente."
