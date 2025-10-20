@@ -9,9 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.8, 3.9, 3.10, 3.11]
 
     steps:
       - name: Checkout código
@@ -20,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
       - name: Instalar dependencias (si existe)
         run: |
@@ -44,7 +41,7 @@ jobs:
 
       - name: Generar artefacto de entrega
         run: |
-          ART=build-artifact-${{ matrix.python-version }}.zip
+          ART=build-artifact-3.11.zip
           # Empaquetar código/ docs / archivos relevantes
           zip -r "$ART" main docs README.md requirements.txt main/tests || tar -czf "$ART" main docs README.md requirements.txt main/tests
 
