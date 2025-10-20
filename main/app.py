@@ -1,6 +1,6 @@
 from src.voraz import roV
 from src.bruta import roFB
-from src.dinamica import roD
+from src.dinamica import roPD
 
 if __name__ == "__main__":
     print("Elija el método para resolver el problema:")
@@ -13,7 +13,7 @@ if __name__ == "__main__":
     elif eleccion == "2":
         roV()
     elif eleccion == "3":
-        roD()
+        roPD()
     else:
         print("Opción no válida. Saliendo...")
 
