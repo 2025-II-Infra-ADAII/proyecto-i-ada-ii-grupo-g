@@ -119,18 +119,21 @@ def dp(mask, tiempo_actual):
 
 ## 5. Ejemplo
 Entrada de ejemplo:
+```csharp
 5
-10,3,4
-5,3,3
-2,2,1
-8,1,1
-6,4,2
+[10,3,4]
+[5,3,3]
+[2,2,1]
+[8,1,1]
+[6,4,2]
+```
 
 El algoritmo encuentra un orden óptimo (por ejemplo):
 ```csharp
 [2, 1, 4, 3, 0]
-con un costo total mínimo (dependiente de los parámetros).
 ```
+con un costo total mínimo (dependiente de los parámetros).
+
 
 ---
 
@@ -140,14 +143,14 @@ con un costo total mínimo (dependiente de los parámetros).
 flowchart TD
     A[Inicio] --> B[Leer archivo de entrada]
     B --> C[Inicializar dp y parámetros]
-    C --> D[dp(mask, tiempo): función recursiva]
+    C --> D[Llamar dp(mask, tiempo) función recursiva]
     D --> E[¿mask == todos regados?]
-    E -- Sí --> F[Retornar 0, []]
-    E -- No --> G[Evaluar todos los tablones no regados]
+    E -- Sí --> F[Retornar 0 y lista vacía]
+    E -- No --> G[Evaluar tablones no regados]
     G --> H[Calcular penalización y llamar dp(mask | (1<<i))]
     H --> I[Actualizar mejor costo y orden]
-    I --> J[Retornar mejor_costo, mejor_orden]
-    J --> K[Escribir archivo de salida y mostrar resultado]
+    I --> J[Retornar mejor_costo y mejor_orden]
+    J --> K[Guardar archivo de salida y mostrar resultado]
 ```
 ---
 
